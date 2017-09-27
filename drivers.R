@@ -146,3 +146,7 @@ cor.test(btc_data$btc_market_price,btc_data$btc_n_transactions)
 #correlation test:price with total transactions
 cor.test(btc_data$btc_market_price,btc_data$btc_n_transactions_total)
 
+#Boxplot of the returns
+box_plot_bitcoin <- ggplot(na.omit(btc_data),aes(x='',y=return))+geom_boxplot(outlier.size=2,outlier.colour="red")+theme_Publication()+xlab('')+ylab('Return')+
+  ggtitle('Return Box Plot')
+box_plot_bitcoin
