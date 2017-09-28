@@ -62,22 +62,14 @@ ggplot(bitcoin_variables_log, aes(x = bitcoin_variables$Date, y = log_btc_daily_
 ggplot(bitcoin_variables_log, aes(x = bitcoin_variables$Date, y = log_btc_n_transactions)) + geom_line() 
 ggplot(bitcoin_variables_log, aes(x = bitcoin_variables$Date, y = log_btc_n_transactions_total)) + geom_line() 
 
-#Notice in plot below, structural break in daily coin supply at 11/07/2017 and after. Bitcoin officially restricted new daily coin supply by halve. 
-log_btc_daily_new_coins <- log (bitcoin_variables$btc_daily_new_coins)
-
-#Below adds a dummy variable to account for this, where dummy = 1 on dates 11/07/2016 and beyond
-bitcoin_variables_log <- mutate(bitcoin_variables_log, dummy = 0)
-
-for (i in 599:nrow(bitcoin_variables_log)){
-  bitcoin_variables_log[i, "dummy"] <- 1 
-}
-
-View(bitcoin_variables_log)
-
 #Multiple regressions
 #Regression 1 (reg_1) market price on transactions and total bitcoin supply with intercept
 reg_1 <- lm(log_btc_market_price ~ log_btc_n_transactions_total + log_btc_total_bitcoins, data=bitcoin_variables_log)
 summary(reg_1)
+
+install.packages("stargazer")
+library(stargazer)
+stargazer(reg_1, type = "text", title="Regression Results", digits = 2)
 
 reg_1.res <- residuals(reg_1)
 reg_1.predict <- predict(reg_1)
@@ -92,7 +84,3 @@ comparison_2 <- comparison %>%
 View(comparison_2)
 
 ggplot(comparison_2, aes(x=bitcoin_variables.Date,y=log_btc_market_price))+geom_point(colour="black", shape=21, fill="orange")+geom_point(aes(y=reg_1.predict),colour="Red",shape=22,size=-1)
-
-#Regression 2 (reg_2) market price on transactions and total bitcoin supply with intercept and dummy
-reg_2 <- lm(log_btc_market_price ~ log_btc_n_transactions_total + log_btc_total_bitcoins + dummy, data=bitcoin_variables_log)
-summary(reg_2)
