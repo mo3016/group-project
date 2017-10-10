@@ -89,6 +89,30 @@ bitcoin_variables <- bitcoin %>%
          "btc_trade_volume", "btc_median_confirmation_time", "btc_hash_rate", "btc_output_volume",
          "btc_estimated_transaction_volume", "btc_estimated_transaction_volume_usd")%>%
   filter(Date >= "2013-04-02")
+
+
+#Data cycle 3
+#Importing FX CSV and removing repeated date column
+FX <- read_csv("FX.csv")
+fx <- select(FX, Date, CNYUSD, JPYUSD, GBPUSD, EURUSD)
+
+#Importing Gold Dataset
+gold <- read_csv("Gold Series Data.csv")
+names(gold)[2] <- 'goldprice'
+
+#Formatting Date column, then merging datasets, removing NA observations and selecting required variables
+fx$Date <- dmy(fx$Date)
+gold$Date <- dmy(gold$Date)
+fxdata <- btc_data %>% left_join(fx, by='Date') %>% left_join(gold, by='Date')
+fxdata <- fxdata %>% select(Date, btc_market_price, JPYUSD, EURUSD, GBPUSD, goldprice) %>% filter(!is.na(JPYUSD))
+
+#Defining a function to calculate returns and using it to create columns for returns
+#Returns have to be recalculated as some prices have been removed
+gen_ret <- function(colname) {
+  (colname - lag(colname)) / lag(colname) * 100
+}
+fxdata <- mutate(fxdata, btcret = gen_ret(btc_market_price), eurret = gen_ret(EURUSD), jpyret = gen_ret(JPYUSD), gbpret = gen_ret(GBPUSD), goldret = gen_ret(goldprice))
+
 ```
 
 #1. Introduction
@@ -205,7 +229,39 @@ price_v_total_transactions <- ggplot(btc_data,aes(y=btc_market_price,x=btc_n_tra
 price_v_total_transactions
 ```
 
+###Bitcoin mining difficulty and supply
+Bitcoin mining is the process of verifying a transaction. This process gets more difficult as more bitcoins are successfully mined. There is also a limited number of bitcoins, 21 million to be exact (Volastro, 2014). As we approach that number, and the difficulty of mining increases, so too does the scarcity of bitcoins. We will now display the effect that the supply of bitcoins and mining difficulty has had on the price, along with the rise in difficulty over time.
 
+Mining difficulty is almost perfectly correlated to bitcoin price, with a correlation coefficient of 0.9009963, while supply of bitcoin is still strong with a coefficient of 0.526925. 
 
+```{r , echo=F,warning=F}
 
+#Price vs number of bitcoins
+price_v_total <-
+ggplot(data = btc_data) +
+  geom_point(aes(x =( btc_total_bitcoins/1000000),y = btc_market_price )) +
+  ylab( "Price") +
+  xlab( "Total number of bitcoins (millions)") +ggtitle('Price vs Supply of bitcoins') +theme_Publication()
+price_v_total
+#Correlation Price vs number of bitcoins
+cor.test(btc_data$btc_market_price,btc_data$btc_total_bitcoins)
 
+#Price vs Mining difficulty
+price_v_mining <-
+  ggplot(data = btc_data) +
+  geom_point(aes(x =( btc_difficulty/1000000),y = btc_market_price )) +
+  ylab( "Price") +
+  xlab( "Relative mining difficulty") +ggtitle('Price vs Mining difficulty') +theme_Publication()
+price_v_mining
+#Correlation Price vs Mining difficulty
+cor.test(btc_data$btc_market_price,btc_data$btc_difficulty)
+
+#Mining difficulty over time
+mining_over_time <-
+  ggplot(data = btc_data) +
+  geom_point(aes(x =( btc_difficulty/1000000),y = Date )) +
+  ylab( "Time") +
+  xlab( "Relative mining difficulty") +ggtitle('Mining difficulty over time') +theme_Publication()
+mining_over_time
+
+```
