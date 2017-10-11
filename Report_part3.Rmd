@@ -1,0 +1,430 @@
+---
+title: "Group I - Bitcoin Report"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = F, warning = F)
+
+
+library(knitr)
+library(ggplot2)
+library(dplyr)
+library(ggthemes)
+library(readr)
+library(lubridate)
+library(tidyr)
+library(reshape2)
+
+
+
+#load the dataset
+bitcoin_dataset <- read.csv('bitcoin_dataset.csv')
+
+#change data (imported manually) into tbl
+data <-tbl_df(bitcoin_dataset)
+
+#Covert date string to Date type
+data <-mutate(data,Date =as.Date(Date,format='%m/%d/%Y' ))
+
+#subset data: only use data from Apri1 1st, 2013
+btc_data <- data[776:nrow(data),]
+View(btc_data)
+
+#Plot theme ---- use '+theme_publicaton' with ggplot call
+theme_Publication <- function(base_size=14, base_family="sans") {
+  library(grid)
+  library(ggthemes)
+  (theme_foundation(base_size=base_size, base_family=base_family)
+    + theme(plot.title = element_text(face = "bold",
+                                      size = rel(1.2), hjust = 0.5),
+            text = element_text(),
+            panel.background = element_rect(colour = NA),
+            plot.background = element_rect(colour = NA),
+            panel.border = element_rect(colour = NA),
+            axis.title = element_text(face = "bold",size = rel(1)),
+            axis.title.y = element_text(angle=90,vjust =2),
+            axis.title.x = element_text(vjust = -0.2),
+            axis.text = element_text(), 
+            axis.line.x = element_line(colour="black"),
+            axis.line.y = element_line(colour="black"),
+            axis.ticks = element_line(),
+            panel.grid.major = element_line(colour="#f0f0f0"),
+            panel.grid.minor = element_blank(),
+            legend.key = element_rect(colour = NA),
+            legend.position = "bottom",
+            legend.direction = "horizontal",
+            legend.key.size= unit(0.2, "cm"),
+            
+            legend.title = element_text(face="italic"),
+            plot.margin=unit(c(10,5,5,5),"mm"),
+            strip.background=element_rect(colour="#f0f0f0",fill="#f0f0f0"),
+            strip.text = element_text(face="bold")
+    ))
+  
+}
+
+#Data cycle 2
+
+#change data (imported manually) into tbl
+bitcoin <- tbl_df(bitcoin_dataset)
+
+#Covert date string to Date type
+bitcoin <- mutate(bitcoin, Date = as.Date(Date,format = '%m/%d/%Y'))
+View(bitcoin)
+
+#Calculate new variables for analysis, add this to bitcoin dataframe, 1. price return  called "btc_price_return" and 2. coin supply daily as "btc_daily_new_coins"
+#New variables are calculated and added to the "bitcoin" dataframe 
+
+bitcoin <- mutate(bitcoin, btc_price_return=(btc_market_price-lag(btc_market_price))/lag(btc_market_price)*100, btc_daily_new_coins=btc_total_bitcoins-lag(btc_total_bitcoins))
+
+#View structure of new dataframe with new variables
+str(bitcoin)
+
+#Extract all useful columns from "bitcoin" dataframe for data analysis, place these new columns and with selected date periods into a dataframe called "bitcoin_variables"
+bitcoin_variables <- bitcoin %>% 
+  select("Date", "btc_market_price", "btc_price_return", "btc_total_bitcoins", "btc_daily_new_coins", "btc_n_transactions",
+         "btc_n_transactions_total", "btc_n_transactions_excluding_popular", "btc_n_transactions_per_block",
+         "btc_n_transactions_excluding_chains_longer_than_100", "btc_market_cap", 
+         "btc_trade_volume", "btc_median_confirmation_time", "btc_hash_rate", "btc_output_volume",
+         "btc_estimated_transaction_volume", "btc_estimated_transaction_volume_usd")%>%
+  filter(Date >= "2013-04-02")
+
+
+#Data cycle 3
+#Importing FX CSV and removing repeated date column
+FX <- read_csv("FX.csv")
+fx <- select(FX, Date, CNYUSD, JPYUSD, GBPUSD, EURUSD)
+
+#Importing Gold Dataset
+gold <- read_csv("Gold Series Data.csv")
+names(gold)[2] <- 'goldprice'
+
+#Formatting Date column, then merging datasets, removing NA observations and selecting required variables
+fx$Date <- dmy(fx$Date)
+gold$Date <- dmy(gold$Date)
+fxdata <- btc_data %>% left_join(fx, by='Date') %>% left_join(gold, by='Date')
+fxdata <- fxdata %>% select(Date, btc_market_price, JPYUSD, EURUSD, GBPUSD, goldprice) %>% filter(!is.na(JPYUSD))
+
+#Defining a function to calculate returns and using it to create columns for returns
+#Returns have to be recalculated as some prices have been removed
+gen_ret <- function(colname) {
+  (colname - lag(colname)) / lag(colname) * 100
+}
+fxdata <- mutate(fxdata, btcret = gen_ret(btc_market_price), eurret = gen_ret(EURUSD), jpyret = gen_ret(JPYUSD), gbpret = gen_ret(GBPUSD), goldret = gen_ret(goldprice))
+
+```
+
+#1. Introduction
+Since their inception in 2009, the world has come to recognise the power of cryptocurrencies for their the potential value and threat of disruption.  None more so than Bitcoin, the current star of an ever-growing list of cryptocurrencies. Despite becoming a household name, there is still much confusion and misinformation surrounding it. A current topic of debate regarding Bitcoin is its true identity. This report will investigate whether cryptocurrencies, using Bitcoin as an example, share properties and characteristics of traditional currencies. We will quantitatively investigate this using a dataset containing historical price, total coins in circulation, transactions and similar variables for Bitcoin. 
+ 
+##1.1 What is Bitcoin?
+"Broadly speaking, Bitcoin is a scheme designed to facilitate the transfer of value between parties. Unlike traditional payment systems, which transfer funds denominated in sovereign currencies, Bitcoin has its own metric for value called bitcoin" (Badev & Chen, 2014). It uses blockchain technologies to control the creation and transfer of money. This creation is known as 'mining', where independent users verify transactions in return for fees. It has since been imitated to varying degrees of success by a range of individuals and companies leading to the creation of a 'cryptocoin' market (Wikipedia, 2017a).
+
+##1.2 Background
+In general terms, Economics defines money or currency as a medium of exchange for goods and transactions, a store of value and a unit of account (Begg, 2005). Whilst these properties are exhibited by most known popular currencies (USD, GBP etc.), the new class of Cryptocurrencies, like Bitcoin, have sparked economic debate on whether they have some or all of the properties and therefore can be classed as a traditional currency. 
+
+###Cryptocurrency fundamentals
+Cryptocurrencies like Bitcoin are fundamentally not created or managed like traditional currencies. For example, in the case of USD a traditional currency, bills and coins  (M1 money) is produced and managed by the United States Central Bank, the Federal Reserve. The Federal Reserve's main priorities include regulating the supply and demand of USD using interest rates, this reflects demand for currency or transactions in the real economy and the supply needed to facilitate these transactions. 
+
+Bitcoin does not conform to centralization and has no central bank that balances its demand and supply, and hence it's price. Supply of Bitcoins as of the latest data point (16/09/2017) in our dataset stands at over 16.5 million units, only 21 million units of Bitcoins will only ever be produced. 
+
+From a transactions perspective, Bitcoins can be used to buy goods and services or be exchanged into other currencies. As of the latest data point (16/09/2017) in our dataset, total accumulated transactions exceed 255 million. Economically, to be classified as a medium of exchange retailers are needed to accept purchases as Bitcoins and these transactions amount are relatively small compared to other currencies. Ebay popularly cites 100 companies that now accept the coins, however only PayPal stands out as the main company.
+
+###The Theory
+'Money is the medium of exchange, for which it must also be a store of value. These two functions of money provide the reasons why people wish to hold it.' (Begg, 2005). Macroeconomically, traditional currencies contain these properties. Bitcoin on the other hand, cannot so easily be defined by these defined principles, also confirmed by Ciaian et all (2016).
+
+We expect Bitcoin to be more easily be equated by non-traditional demand and supply mechanics, equating in the exchange price. Given the rate of new coins mined is publicly known and fixed (3.07% 01/01/2017 - 16/09/2017) and an eventual closing of total coins will be tapered to 21 million units, we can conclude Bitcoin supply is relatively fixed and does not have facility for Central Bank manipulation. 
+
+In addition, another important variable is demand for currency or transactions, it does not matter whether coin supply is slowing and will stop, if there is no demand for the currency with respects to real transactions, the exchange price will be 0. Yermack (2014) states that there are various types of users of Bitcoin from investor, speculators to normal consumers. Yermack (2014) further states that certain clients believe that the price of Bitcoin will rise further as transactions and acceptance by retailers is increased. Buchholz et al. (2012) as cited by Ciaian et all (2016), goes further in that Bitcoin price is a combination of demand and supply mechanics, specifically with transaction demand playing a heavy role as medium of exchange. 
+
+##1.3 Our research questions
+Based on the theory and evidence from literature, we will build and investigate two main research questions:
+Does Bitcoin exhibit traditional currency demand and supply mechanics? We will investigate this using a combination of descriptive statistics and plots. We will then build an econometric regression model to show the effects between demand and supply of bitcoins on it's price, providing evidence on whether Bitcoin is a demand driven or supply driven currency. 
+	
+We predict that Bitcoin will show greater supply dominant effects but the effect of demand or transactions to be small or negligible, i.e. Bitcoin is not a good medium of exchange.
+
+Are changes in Bitcoin's exchange price related to movements in other major currencies, and are the profile of returns similar?
+
+We predict that returns on the Bitcoin would not be closely correlated to that of other currencies due to its young age, but, as a currency, it should exhibit a similar profile of returns.
+
+
+##1.4 Data and methodology
+Our dataset contains historical pricing information on bitcoin (along with transaction volume, mining difficulty, and more) on every second day from 03/01/2009. This datasets are featured on Kaggle, and were created by user 'SRK'. Although the data begins in 2009, there was very little bitcoin activity for the first few years. For the purpose of our analyses, we are only looking at the pricing information from April 2nd 2013 onwards. This gives us 815 observations and 24 initial variables. Our approach will be a mix  of quantitative statistical methods.
+
+##1.5 Description of Variables
+Although our primary dataset has 24 variables, we focused on 5 from the original dataset and created a new 'returns' variable using the DPLYR Mutate() function. The following descriptions were taken from the Dataset's overview page on Kaggle (SRK,2017).
+
+```{r, echo=FALSE}
+
+d1 <- data.frame("Name"=c('Date','btc_total_bitcoins','btc_market_price','btc_difficulty','btc_n_transactions_total','returns'),'Description'=c('Date of observation ','The total number of bitcoins that have already been mined','Average USD market price across major bitcoin exchanges','A relative measure of how difficult it is to find a new block','Total number of transactions','Returns on Bitcoin price'))
+kable(d1, Caption = "Table 1")
+```
+
+
+In addition, two other other datasets were included in our study, which included historical gold prices and exchange rates of other large currencies with the USD. Gold price data was downloaded from Datastream, while historical exchange rates of the JPY, EUR, CNY and GBP were downloaded from Bloomberg directly. We combined these two datasets and filtered the rows to match the dates of the Bitcoin data.
+
+
+```{r, echo=FALSE}
+d2 <- data.frame("Name"=c('JPYUSD','BGPUSD','EURUSD','goldprice'),'Description'=c('Japanese Yen in USD','Great British Pound in USD','Euro in USD','Gold price'))
+kable(d2, Caption = "Table 2")
+```
+
+#2. Does Bitcoin exhibit traditional currency demand and supply mechanics?
+
+##2.2 Descriptive statistics
+We begin by analysing  the internal drivers of bitcoin. This was done by looking at the correlation between bitcoin's price and other variables in the dataset, as well as viewing how certain variables have changed over time.
+
+
+
+
+
+
+```{r , echo=F,warning=F}
+#Price over time
+price_over_time<-ggplot(data=btc_data, aes(x=Date, y=btc_market_price ))+ 
+  geom_line() +theme_Publication() +xlab("Date") +ylab("Price $")+ ggtitle('Price over time')
+price_over_time
+
+```
+
+###Return of Bitcoin Price
+We then computed the return of bitcoin price over the investigated time period. The return is computed by dividing the difference between the market price of t-1 and t by the market price of t-1. 
+
+```{r , echo=F,warning=F}
+#return over time
+btc_data <-mutate(btc_data,return = (btc_market_price-lag(btc_market_price))/lag(btc_market_price)*100)
+
+return_over_time<-ggplot(data=btc_data, aes(x=Date, y=return))+ 
+  geom_line() +theme_Publication() +xlab("Date") +ylab("Return %")+ ggtitle('Return over time')
+return_over_time
+```
+
+As can be seen from the line graph, the return fluctuates significantly at the beginning, namely, around year 2014. Despite some spikes, the return tends to be more stable afterwards, with the exception of this year,, potentially due to a bitcoin bubble. This can be further illustrated in the density plot, as the value of return is likely to fall around zero but the range is wide with several outliers marked in red.
+
+The selected descriptive statistics of bitcoin price return (in %) are presented in the following table.
+```{r , echo=F,warning=F}
+#descriptive statistics of return 
+
+d3 <- data.frame("Stat"=c('min','max','median','mean','variance','standard deviation'),'Value'=c('-61.37','34.51','0.43','0.68','44.97','6.71'))
+kable(d3, Caption = "Table 3")
+
+#return density plot
+return_density_plot <- ggplot(btc_data,aes(x=return))+geom_density()+theme_Publication()+xlab('Return')+ylab('Density')+
+  ggtitle('Price Return Density Plot')
+return_density_plot
+
+
+```
+
+###Bitcoin Price and Transaction Volume
+Another aspect worth looking into is the relationship between bitcoin price and the corresponding transaction volume. In this report, total number of transactions is chosen, which indicates the volume of bitcoin used as a medium of exchange for goods or services. The scatter plot in general depicts a positive relationship between bitcoin price and total number of transactions over time and according to Kristoufek (2015), this positive correlation should hold because the increase in transactions increases the utility of bitcoin and thus leads to the increase in bitcoin price.
+ 
+A correlation test is performed subsequently and the correlation coefficient is 0.73, which further confirms a high correlation between bitcoin price and the number of total transactions.
+ 
+
+```{r , echo=F,warning=F}
+#scatter plot price vs total transactions
+price_v_total_transactions <- ggplot(btc_data,aes(y=btc_market_price,x=btc_n_transactions_total))+geom_point()+theme_Publication()+xlab('Total Transactions')+ylab('Price')+ggtitle('Price vs Total Transactions')
+price_v_total_transactions
+```
+
+###Bitcoin mining difficulty and supply
+Bitcoin mining is the process of verifying a transaction. This process gets more difficult as more bitcoins are successfully mined. There is also a limited number of bitcoins, 21 million to be exact (Volastro, 2014). As we approach that number, and the difficulty of mining increases, so too does the scarcity of bitcoins. We will now display the effect that the supply of bitcoins and mining difficulty has had on the price, along with the rise in difficulty over time.
+
+Mining difficulty is almost perfectly correlated to bitcoin price, with a correlation coefficient of 0.9009963, while supply of bitcoin is still strong with a coefficient of 0.526925. 
+
+```{r , echo=F,warning=F}
+
+#Price vs number of bitcoins
+price_v_total <-
+ggplot(data = btc_data) +
+  geom_point(aes(x =( btc_total_bitcoins/1000000),y = btc_market_price )) +
+  ylab( "Price") +
+  xlab( "Total number of bitcoins (millions)") +ggtitle('Price vs Supply of bitcoins') +theme_Publication()
+price_v_total
+#Correlation Price vs number of bitcoins
+cor.test(btc_data$btc_market_price,btc_data$btc_total_bitcoins)
+
+#Price vs Mining difficulty
+price_v_mining <-
+  ggplot(data = btc_data) +
+  geom_point(aes(x =( btc_difficulty/1000000),y = btc_market_price )) +
+  ylab( "Price") +
+  xlab( "Relative mining difficulty") +ggtitle('Price vs Mining difficulty') +theme_Publication()
+price_v_mining
+#Correlation Price vs Mining difficulty
+cor.test(btc_data$btc_market_price,btc_data$btc_difficulty)
+
+#Mining difficulty over time
+mining_over_time <-
+  ggplot(data = btc_data) +
+  geom_point(aes(x =( btc_difficulty/1000000),y = Date )) +
+  ylab( "Time") +
+  xlab( "Relative mining difficulty") +ggtitle('Mining difficulty over time') +theme_Publication()
+mining_over_time
+
+```
+
+
+
+#3. Is Bitcoin’s price movements related or similar to movements in other major currencies? 
+
+##3.1 Correlation Analysis of Returns
+
+Furthering this investigation into whether Bitcoin should be considered a currency, comparisons between Bitcoin and other major currencies could be made to explore the similarities between them. Gold is also included in this comparison, acting as a benchmark representing a completely different asset class and a known financial ‘safe-haven’. To normalise the differences in nominal exchange rates between different currencies, this section would use the returns of each currency when expressed in USD. 
+
+A preliminary analysis on the correlation between the returns of each currency would provide an idea of how close the Bitcoin price is related to prices of other currencies. If Bitcoin behaved like any other asset or currency, it should be expected that it would display positive correlations with them as their prices and exchange rates are all expressed in terms of USD, and at least US-centric events should affect the prices on all assets similarly. 
+
+
+```{r, warning=FALSE, echo=F}
+#Correlation table
+corr_table<-fxdata %>% select(btcret, gbpret, jpyret, eurret, goldret) %>% cor(use = 'complete.obs')
+melted_currency <- melt(corr_table)
+
+ggplot(data = melted_currency, aes(x=Var1, y=Var2, fill=value)) + 
+  geom_tile()+scale_fill_gradient2(low = "blue", high = "red")+
+  ylab( "") +
+  xlab( "") +ggtitle('Correlation Heatmap') 
+```
+
+
+The correlation heatmap indicates that the Bitcoin’s returns are insignificantly and possibly negatively correlated with the returns on other assets. Even the Japanese Yen, known to be a safe-haven currency, and gold, demonstrate stronger relationships in price movements with other currencies than the Bitcoin do, suggesting the Bitcoin may stand as an asset class on its own. A one-sided statistical test on correlations between returns on each currency confirms that the Bitcoin’s returns does not exhibit any positive correlation with the return on any other currency. This test uses the hypotheses:
+
+H~0~: The correlation between the currency’s returns and bitcoin returns is equal to 0.  
+H~1~: The correlation between the currency’s returns and bitcoin returns is greater than 0.
+
+The results of the tests are tabulated below.
+
+```{r}
+
+
+
+```
+
+
+To better visualise and attain a deeper understanding of these correlation coefficients, scatterplots of Bitcoin’s returns against the returns of other currencies could be employed. On its own, scatterplots of Bitcoin’s returns against returns on other currencies seem to be random, with no clear relationship.
+
+```{r, echo=F, warning=F}
+#New Long dataset and Scatter against BTC: Note the lack of relationship in all the charts
+fxdata3 <- fxdata %>% select(Date, btcret, gbpret, jpyret, eurret, goldret) %>% gather(curr, ret, -Date, -btcret)
+ggplot(fxdata3, aes(x = btcret)) + geom_point(aes(y=ret)) + facet_grid(~curr) + xlim(-5, 5) + ylim(-5, 5) +
+  theme_Publication() +
+  ylab( "Returns") + xlab( "Bitcoin Returns") +ggtitle('Bitcoin returns vs other currencies') 
+rm(fxdata3)
+
+#New Long dataset and Scatter against EUR: Note the relationships between EURJPY and GBPEUR pairs. 
+#CNY has a somewhat insignificant relationship, possibly explained by Chinese currency controls. Also explains extremely low volatility
+fxdata3a <- fxdata %>% select(Date, btcret, gbpret, jpyret, eurret, goldret) %>% gather(curr, ret, -Date, -eurret)
+ggplot(fxdata3a, aes(x = eurret)) + geom_point(aes(y=ret)) + facet_grid(~curr) + xlim(-5, 5) + ylim(-5, 5) +
+  theme_Publication() +
+  ylab( "Returns") + xlab( "Euro Returns") +ggtitle('Euro returns vs other currencies') 
+rm(fxdata3a)
+```
+
+
+A scatterplot of the return on the Euro against that of other currencies serves as a good point of comparison for the scatterplots of bitcoin return against returns on other currencies. It is immediately noticeable that there is some positive correlation between the returns on the Euro and returns on other currencies, such as GBP and JPY, which was absent in Bitcoin’s case. 
+
+##3.2 Analysis of returns profile
+
+The above analysis using correlations and scatterplots show little evidence of a contemporaneous relationship between the returns on Bitcoin and returns on other currencies. However, it is possible that a contemporaneous relationship would be absent due to the Bitcoin market being relatively new and illiquid, with a high level of information asymmetry, compared to the foreign exchange markets. As such, the following analysis aims to remove time as a factor, focusing on the general profile of returns - namely mean, variance and distribution.
+
+While variance is a key component in the profile of an asset’s returns, comparing bitcoin volatility to that of other currencies would be meaningless and draw no conclusions as the variance of returns between different currencies proves to be statistically different from one another as well. As such, comparisons of variance is excluded from this study.
+
+In testing the mean of returns, it would be most appropriate to use t-tests on each currency with the following hypothesis:
+
+H~0~:  The currency’s mean return is equal to the mean return of Bitcoin  
+H~1~: The currency’s mean return is not equal to the mean return of Bitcoin
+
+A t-test was performed in order to test the null hypothesis if the means of returns of currencies are equal to the mean of returns of bitcoin.
+
+```{r, echo=F, warning=F}
+#Calculate t-test on Hypothesis: mean1 = mean2 
+meaneq <- function(colname) {
+  round(as.numeric(t.test(fxdata$btcret, colname)[3]), 3)
+}
+
+pvmeaneq <- data.frame('BTC' = meaneq(fxdata$btcret),
+              'EUR' = meaneq(fxdata$eurret),
+              'GBP' = meaneq(fxdata$gbpret),
+              'JPY' = meaneq(fxdata$jpyret),
+              'Gold' = meaneq(fxdata$goldret))
+kable(pvmeaneq, caption= "p-values from test of equal means")
+
+```
+
+
+The vector above shows the p-values for the t-tests on each currency, all of which are much less than 0.01. At the 1% level of significance the null hypothesis is rejected - means of returns of currencies are not equal to the mean of returns of bitcoin. 
+
+A secondary t-test can be performed to check if the mean of returns of currencies, gold and bitcoin are equal to zero. This should be expected because exchange rates between currencies should not exhibit any long term expected returns.
+
+
+```{r}
+#Calculate t-test on Hypothesis: mean = 0 
+mean0 <- function(colname) {
+  round(as.numeric(t.test(colname)[3]), 3)
+}
+pvmean0 <- data.frame('BTC' = mean0(fxdata$btcret),
+             'EUR' = mean0(fxdata$eurret),
+             'GBP' = mean0(fxdata$gbpret),
+             'JPY' = mean0(fxdata$jpyret),
+             'Gold' = mean0(fxdata$goldret))
+kable(pvmean0, caption= "p-values from test of mean equal zero")
+```
+
+
+Once again, the p-values are displayed in a vector; this time the p-values for established currencies and gold suggest that there is insufficient evidence to reject the null hypothesis, indicating that the mean return is statistically insignificant. However the p-value in bitcoin’s case is lower than the level of significance for the test. The null hypothesis is thus rejected, indicating mean of returns of bitcoin is not equal to zero. 
+
+The mean return of Bitcoin points toward it not acting like a currency, as it bears no similarities to the returns of established currencies of today, and has had a non-zero mean return over the last 5 years. However, the bitcoin can be argued to have yet to find its stable price amongst other currencies, as its economy is still growing rapidly, leading to a difference in mean returns. 
+
+The plot below presents the distribution of returns for Bitcoin (red line), Euro (yellow line), GBP (green line), JPY (purple line) and Gold (blue line). Immediately, similarities can be observed between density of returns for currencies and, to some extent, gold, whereas the returns of bitcoin are far more volatile and widely distributed.
+
+
+```{r}
+#Density plots of returns (Left out CNY as its variance is too small)
+fxdata3b <- fxdata %>% select(Date, btcret, gbpret, jpyret, eurret, goldret) %>% gather(curr, ret, -Date)
+ggplot(fxdata3b, aes(x = ret)) + geom_density(aes(colour = curr)) + xlim(-7.5, 7.5) +
+  ylab( "Density") + xlab( "Returns") +ggtitle('Density of returns')+
+  theme_Publication()
+rm(fxdata3b)
+```
+
+
+Since bitcoin is a new market, volatility should be expected, and as such a simple density plot of returns may not be the best point of comparison. Instead, a plot of the distribution of standardised returns, which are the returns after having removed the effects of differences in mean and variance, is plot below. 
+
+
+```{r}
+#Creating function to standardise returns
+stand <- function(input) {
+  a <- (input - mean(input, na.rm = T)) / sd(input, na.rm = T)
+  return (a)
+}
+
+#Creating dataframe of standardised returns and plotting
+stdretdf <- data.frame('btc' = stand(fxdata$btcret), 
+                       'eur' = stand(fxdata$eurret), 
+                       'gbp' = stand(fxdata$gbpret), 
+                       'jpy' = stand(fxdata$jpyret), 
+                       'gold' = stand(fxdata$goldret))
+
+stdretdf2 <- gather(stdretdf, curr, ret)
+
+ggplot(stdretdf2) + geom_density(aes(x=ret, colour = curr)) + xlim(-3, 3) +
+  ylab( "Density") + xlab( "Standardised Returns") +
+  ggtitle('Density of standardised returns') +
+  theme_Publication()
+```
+
+The density plot of standardised returns presents a much clearer picture of the distribution of returns of Bitcoin compared to other currencies. It is evident that, while not exactly equal, the distributions of other currencies’ returns are very similar to one another, and relatively close to that of gold. The distribution of returns of Bitcoin however is very different from all the other distributions, with a much higher peak. Furthermore, the modal return in each distribution appears to be marginally positive, while that of Bitcoin is marginally negative, indicating a possible difference in the sign of the skew. While further statistical tests outside the scope of this paper have to be performed to ascertain such claims, the plot above clearly shows a stark difference in the underlying distribution of returns between bitcoin and other currencies. As such, it can be said that the profile of Bitcoin returns are fundamentally different from that of currencies, and more different from currencies than gold is. 
+
+
+#4. Findings & Conclusions
+
+In this study two central research questions about Bitcoin were introduced - does Bitcoin exhibit traditional currency demand and supply mechanics, and are changes in Bitcoin’s exchange price related to movements in other major currencies, and are the profile of returns similar. 
+
+Our analysis concludes that Bitcoin does exhibit currency-like demand and supply mechanics in line with our prediction in Section 1.3. Further we assumed that Bitcoin would show greater supply effects versus transaction demand on exchange price, our econometric model showing this to be so. However, given the effect sizes from our model, we settle on a view that Bitcoin’s transaction demand effect is relatively weak, and without a strong desire for consumers to use it, Bitcoin cannot be called a true medium of exchange. 
+
+We further investigated Bitcoin’s  properties and specifically compared them to movements in other major currencies. As expected, the correlation between the returns of bitcoin and that of other currencies, including gold, has been insignificant over the past few years, which could be attributed to the young age of the bitcoin market. However, contrary to the second hypothesis set out in Section 1.3, it was found that the profile of returns exhibited by Bitcoin (in terms of mean, variance and distribution) is fundamentally different from that of other currencies in all aspects. 
+
+As a result of these findings and the theory we introduced in Section 1.2, we have shown Bitcoin does not conform to the usual Economic interpretation of a currency (medium of exchange, store of value and unit of account). Our further analyses point to Bitcoin being fundamentally different from traditional currency and instead displaying behaviour of a new type of asset class. Given the relative young age of Bitcoin, it is advised that further analysis should be completed later to see if the effects in this study still hold true. Further areas of statistical improvement such as time-series analysis is also recommended.
+
