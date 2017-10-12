@@ -345,7 +345,7 @@ Given the variables in our dataset, we will statistically examine Bitcoin's supp
 
 We can build our econometric model as follows:
 
-$Exchange Price_t = a + b * (Bitcoin Supply)_t + c * (Transactions)_t + e_t$
+$$Exchange Price_t = a + b * (Bitcoin Supply)_t + c * (Transactions)_t + e_t$$
 
 (Where the above relationship represents the natural logarithms transformation of each variable.)
 
@@ -367,7 +367,7 @@ stargazer(reg_1, type = "text", title="Regression Results", digits = 2)
 
 From the summary of multiple linear regression model, the equation should be:
 
-$log(Exchange Price_t) = 295.35 - 22.14 * log (Bitcoin Supply_t) + 4.15 * log (Transactions_t)$
+$$log(Exchange Price_t) = 295.35 - 22.14 * log (Bitcoin Supply_t) + 4.15 * log (Transactions_t)$$
 
 We perform a natural logarithm transformation and plot all the variables on log scale to make sure their relationship is linear. The tendency is, when Bitcoin supply increases, the Exchange Price decreases. In contrast, when transactions increase, the Exchange Price also increases. 
 
