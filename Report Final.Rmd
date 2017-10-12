@@ -166,7 +166,7 @@ Yiting Wang - 01423116
 2.1 - Descriptive statistics
 
 
-2.3 - Econometric Model
+2.2 - Econometric Model
 
 ## 3 - Is Bitcoin's price movements related or similar to movements in other major currencies? 
 3.1 - Correlation Analysis of Returns
