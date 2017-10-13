@@ -127,8 +127,8 @@ Group I Report
 \end{center}
 
 \begin{flushright}
-Anna Kurek - 01444623   
 
+Anna Kurek - 01444623
 
 Linyun Huang - 01379982  
 
@@ -273,7 +273,7 @@ return_over_time<-ggplot(data=btc_data, aes(x=Date, y=return))+
 return_over_time
 ```
 
-As can be seen from the line graph, the return fluctuates significantly at the beginning, namely, around year 2014. Despite some spikes, the return tends to be more stable afterwards, with the exception of this year,, potentially due to a bitcoin bubble. This can be further illustrated in the density plot, as the value of return is likely to fall around zero but the range is wide with several outliers marked in red.
+As can be seen from the line graph, the return fluctuates significantly at the beginning, namely, around year 2014. Despite some spikes, the return tends to be more stable afterwards, with the exception of this year, potentially due to a bitcoin bubble. This can be further illustrated in the density plot, as the value of return is likely to fall around zero but the range is wide with several outliers marked in red.
 
 The selected descriptive statistics of bitcoin price return (in %) are presented in the following table.
 ```{r , echo=F,warning=F}
@@ -568,35 +568,25 @@ As a result of these findings and the theory we introduced in Section 1.2, we ha
 
 \newpage
 #5. References
-Begg, D., Fischer S. and Dornbusch R. (2005). Economics 8th Edition, McGraw Hill Higher Education
-
-
 Badev, A. and Chen, M. (2014). Bitcoin: Technical Background and Data Analysis. SSRN Electronic Journal. [online] Available at: https://www.federalreserve.gov/econresdata/feds/2014/files/2014104pap.pdf [Accessed 28 Sep. 2017].
 
-
-Wikipedia.org. (2017a). Bitcoin. [online] Available at: https://en.wikipedia.org/wiki/Bitcoin [Accessed 28 Sep. 2017].
-
-
-Wikipedia.org. (2017b). Economics of bitcoin. [online] Available at: https://en.wikipedia.org/wiki/Economics_of_bitcoin [Accessed 28 Sep. 2017].
-
-
-Kristoufek, L. (2015). What Are the Main Drivers of the Bitcoin Price? Evidence from Wavelet Coherence Analysis. PLOS ONE, [online] 10(4), p.e0123923. Available at: http://library.utia.cas.cz/separaty/2015/E/kristoufek-0452318.pdf [Accessed 28 Sep. 2017].
-
-
-SRK (2017). Cryptocurrency Historical Prices | Kaggle. [online] Kaggle.com. Available at: https://www.kaggle.com/sudalairajkumar/cryptocurrencypricehistory [Accessed 28 Sep. 2017].
-
-
-Volastro, A. (2014). CNBC Explains: How to mine bitcoins on your own. [online] CNBC. Available at: https://www.cnbc.com/2014/01/23/cnbc-explains-how-to-mine-bitcoins-on-your-own.html [Accessed 28 Sep. 2017].
-
-
-Yermack, D. (2014), Is Bitcoin a real currency? An economic appraisal, NBER Working Paper No. 19747,  Available at: http://www.nber.org/papers/w19747 [Accessed 28 Sep. 2017].
-
-
-Ciaian, P., Rajcaniova M. and d'Artis K. (2016), The Economics of BitCoin Price Formation, Applied Economics Volume 48 - Issue 19,  Available at: http://www.tandfonline.com/doi/full/10.1080/00036846.2015.1109038 [Accessed 28 Sep. 2017].
-
+Begg, D., Fischer S. and Dornbusch R. (2005). Economics 8th Edition, McGraw Hill Higher Education
 
 Buchholz, M., Delaney, J., Warren, J. and Parker, J. (2012). Bits and Bets, Information, Price Volatility, and Demand for BitCoin, Economics 312,  Available at: http://www.bitcointrading.com/pdf/bitsandbets.pdf [Accessed 28 Sep. 2017].
 
+Ciaian, P., Rajcaniova M. and d'Artis K. (2016), The Economics of BitCoin Price Formation, Applied Economics Volume 48 - Issue 19,  Available at: http://www.tandfonline.com/doi/full/10.1080/00036846.2015.1109038 [Accessed 28 Sep. 2017].
 
 Ebay, (2015), 100+ Companies That Accept Bitcoins As Payment. [online] Available at: http://www.ebay.com/gds/100-Companies-That-Accept-Bitcoins-As-Payment-/10000000206483242/g.html [Accessed 28 Sep. 2017].
+
+Kristoufek, L. (2015). What Are the Main Drivers of the Bitcoin Price? Evidence from Wavelet Coherence Analysis. PLOS ONE, [online] 10(4), p.e0123923. Available at: http://library.utia.cas.cz/separaty/2015/E/kristoufek-0452318.pdf [Accessed 28 Sep. 2017].
+
+SRK (2017). Cryptocurrency Historical Prices | Kaggle. [online] Kaggle.com. Available at: https://www.kaggle.com/sudalairajkumar/cryptocurrencypricehistory [Accessed 28 Sep. 2017].
+
+Volastro, A. (2014). CNBC Explains: How to mine bitcoins on your own. [online] CNBC. Available at: https://www.cnbc.com/2014/01/23/cnbc-explains-how-to-mine-bitcoins-on-your-own.html [Accessed 28 Sep. 2017].
+
+Wikipedia.org. (2017a). Bitcoin. [online] Available at: https://en.wikipedia.org/wiki/Bitcoin [Accessed 28 Sep. 2017].
+
+Wikipedia.org. (2017b). Economics of bitcoin. [online] Available at: https://en.wikipedia.org/wiki/Economics_of_bitcoin [Accessed 28 Sep. 2017].
+
+Yermack, D. (2014), Is Bitcoin a real currency? An economic appraisal, NBER Working Paper No. 19747,  Available at: http://www.nber.org/papers/w19747 [Accessed 28 Sep. 2017].
 
