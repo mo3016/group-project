@@ -305,7 +305,7 @@ price_v_total_transactions
 ###Bitcoin mining difficulty and supply
 Bitcoin mining is the process of verifying a transaction. This process gets more difficult as more bitcoins are successfully mined. There is also a limited number of bitcoins, 21 million to be exact (Volastro, 2014). As we approach that number, and the difficulty of mining increases, so too does the scarcity of bitcoins. We will now display the effect that the supply of bitcoins and mining difficulty has had on the price, along with the rise in difficulty over time.
 
-Mining difficulty is almost perfectly correlated to bitcoin price, with a correlation coefficient of 0.9009963, while supply of bitcoin is still strong with a coefficient of 0.526925. Given the strength of the mining coefficient, we can partly say that plays a key component in it's overall supply function.
+Mining difficulty is almost perfectly correlated to bitcoin price, with a correlation coefficient of 0.9009963, while supply of bitcoin is still strong with a coefficient of 0.526925. Given the strength of the mining coefficient, we can partly say that it plays a key component in it's overall supply function.
 
 ```{r , echo=F,warning=F}
 
