@@ -236,7 +236,7 @@ kable(d1, Caption = "Table 1")
 ```
 
 
-In addition, two other other datasets were included in our study, which included historical gold prices and exchange rates of other large currencies with the USD. Gold price data was downloaded from Datastream, while historical exchange rates of the JPY, EUR, CNY and GBP were downloaded from Bloomberg directly. We combined these two datasets with our original Bitcoin dataset and removed incomplete observations, and worked primarily with the returns on each currency (when expressed in USD).
+In addition, two other other datasets were included in our study, which included historical gold prices and exchange rates of other large currencies with the USD. Gold price data was downloaded from Datastream, while historical exchange rates of the JPY, EUR, CNY and GBP were downloaded from Bloomberg directly. We combined these two datasets with our original Bitcoin dataset and removed incomplete observations, and worked primarily with the returns on each currency (when expressed in USD), calculated from the previous date used in the dataset.
 
 
 ```{r, echo=FALSE}
