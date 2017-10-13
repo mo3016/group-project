@@ -154,22 +154,22 @@ Yiting Wang - 01423116
 1.2 - Background
 
 
-1.3 - Our Research Questions 
+1.3 - Our research questions 
 
 
 1.4 - Data
 
 
-1.5 - Description of Variables
+1.5 - Description of variables
 
 ## 2 - Does Bitcoin exhibit traditional currency demand and supply mechanics?
 2.1 - Descriptive statistics
 
 
-2.2 - Econometric Model
+2.2 - Econometric model
 
 ## 3 - Is Bitcoin's price movements related or similar to movements in other major currencies? 
-3.1 - Correlation Analysis of Returns
+3.1 - Correlation analysis of returns
 
 
 3.2 - Analysis of returns profile
@@ -189,7 +189,7 @@ $~$
 \newpage
 
 #1. Introduction
-Since their inception in 2009, the world has come to recognise the power of cryptocurrencies for their the potential value and threat of disruption.  None more so than Bitcoin, the current star of an ever-growing list of cryptocurrencies. Despite becoming a household name, there is still much confusion and misinformation surrounding it. A current topic of debate regarding Bitcoin is its true identity. This report will investigate whether cryptocurrencies, using Bitcoin as an example, share properties and characteristics of traditional currencies. We will quantitatively investigate this using a dataset containing historical price, total coins in circulation, transactions and similar variables for Bitcoin. 
+Since their inception in 2009, the world has come to recognise the power of cryptocurrencies for their potential value and threat of disruption.  None more so than Bitcoin, the current star of an ever-growing list of cryptocurrencies. Despite becoming a household name, there is still much confusion and misinformation surrounding it. A current topic of debate regarding Bitcoin is its true identity. This report will investigate whether cryptocurrencies, using Bitcoin as an example, share properties and characteristics of traditional currencies. We will quantitatively investigate this using a dataset containing historical prices, total coins in circulation, transactions and similar variables. 
  
 ##1.1 What is Bitcoin?
 "Broadly speaking, Bitcoin is a scheme designed to facilitate the transfer of value between parties. Unlike traditional payment systems, which transfer funds denominated in sovereign currencies, Bitcoin has its own metric for value called bitcoin" (Badev & Chen, 2014). It uses blockchain technologies to control the creation and transfer of money. This creation is known as 'mining', where independent users verify transactions in return for fees. It has since been imitated to varying degrees of success by a range of individuals and companies leading to the creation of a 'cryptocoin' market (Wikipedia, 2017a).
@@ -198,26 +198,28 @@ Since their inception in 2009, the world has come to recognise the power of cryp
 In general terms, Economics defines money or currency as a medium of exchange for goods and transactions, a store of value and a unit of account (Begg, 2005). Whilst these properties are exhibited by most known popular currencies (USD, GBP etc.), the class of Cryptocurrencies like Bitcoin, have sparked economic debate on whether they have some or all of these properties and therefore can be classed as a traditional currency. 
 
 ###Cryptocurrency fundamentals
-Cryptocurrencies like Bitcoin are fundamentally not created or managed like traditional currencies. For example, in the case of USD a traditional currency, bills and coins (M1 money) is produced and managed by the United States central bank, the Federal Reserve. The Federal Reserve's main priorities include regulating the supply and demand of USD using interest rates, thereby having a direct effect on demand for currency or transactions in the real economy and the supply needed to facilitate these transactions. 
+Cryptocurrencies like Bitcoin are fundamentally not created or managed like traditional currencies. For example, in the case of USD a traditional currency, bills and coins (M0 money) is produced and managed by the United States central bank, the Federal Reserve. The Federal Reserve's main priorities include regulating the supply and demand of USD using interest rates, thereby having a direct effect on demand for currency or transactions in the real economy and the supply needed to facilitate these transactions. 
 
-Bitcoin does not conform to centralization and has no central bank that balances its demand and supply, and hence it's price. Supply of Bitcoins as of the latest data point (16/09/2017) in our dataset stands at over 16.5 million units, only 21 million units of Bitcoins will ever be produced. 
+Bitcoin does not conform to centralization and has no central bank that balances its demand and supply, and hence its price. Supply of Bitcoins as of the latest data point (16/09/2017) in our dataset stands at over 16.5 million units, only 21 million units of Bitcoins will ever be produced. 
 
 From a transactions perspective, Bitcoins can be used to buy goods and services or be exchanged into other currencies. As of the latest data point (16/09/2017) in our dataset, total accumulated transactions exceeded 255 million. To be classified as an effective medium of exchange retailers are needed to accept Bitcoins for purchases, at current levels these transactions amount are relatively small compared to traditional currencies. Further, Ebay (Ebay online, 2015) produced a list of 100 popular companies that accept Bitcoins, however the only household name that stands out is Paypal.
 
 ###The Theory
 'Money is the medium of exchange, for which it must also be a store of value. These two functions of money provide the reasons why people wish to hold it.' (Begg, 2005). Macroeconomically, traditional currencies contain these properties. Bitcoin on the other hand, cannot so easily be defined by these principles, also confirmed by Ciaian et all (2016).
 
-Bitcoin's effectiveness as a medium of exchange can be proxied by how well it aligns to classical demand and supply mechanics of traditional currencies, the determinants of its exchange price. One aspect that might not conform to classical theory is Bitcoin's supply. Given the rate of new coins mined is publicly known and relatively steady over time (3.07% 01/01/2017 - 16/09/2017), it's effect and size of effect on the exchange price is unknown. As mentioned earlier Bitcoin does not have a central bank function, without this function to balance supply and demand, we would expect Bitcoin to experience a high degree of volatility. Another important variable is demand for Bitcoins or demand for transactions (using Bitcoins). Technically speaking, if there is no demand for the currency with respects to real transactions, the exchange price will be 0. 
+Bitcoin's effectiveness as a medium of exchange can be proxied by how well it aligns to the classical demand and supply mechanics of traditional currencies, the determinants of its exchange price. One aspect that might not conform to classical theory is Bitcoin's supply. Given the rate of new coins mined is publicly known and relatively steady over time (3.07% 01/01/2017 - 16/09/2017), it's effect and size of effect on the exchange price is unknown. As mentioned earlier Bitcoin does not have a central bank function, without this function to balance supply and demand we would expect Bitcoin to experience a high degree of volatility. Another important variable is demand for Bitcoins or demand for transactions (using Bitcoins). Technically speaking, if there is no demand for the currency with respects to real transactions, the exchange price will be 0. 
 
-Yermack (2014) states that there are various types of users of Bitcoin from investor, speculators to normal consumers. Yermack (2014) further states that certain clients believe that the price of Bitcoin will rise further as accepted transactions by retailers are increased. Buchholz et al. (2012) as cited by Ciaian et all (2016), goes further in that Bitcoin price is a combination of demand and supply mechanics, specifically with transaction demand being a key driver in it's claim to being a medium of exchange. 
+Yermack (2014) states that there are various types of users of Bitcoin from investors, speculators to normal consumers. Yermack (2014) further states that certain clients believe that the price of Bitcoin will rise further as accepted transactions by retailers are increased. Buchholz et al. (2012) as cited by Ciaian et all (2016), goes further in that Bitcoin price is a combination of demand and supply mechanics, specifically with transaction demand being a key driver in its claim to being a medium of exchange. 
 
 ##1.3 Our research questions
 
 1. Based on the theory and evidence from literature, we will investigate two main questions:
-Does Bitcoin exhibit traditional currency demand and supply mechanics? We will investigate this using a combination of descriptive statistics and plots. We will then build an econometric regression model to show the effect of transaction demand and supply of bitcoins on it's price, providing evidence on whether Bitcoin is a demand driven or supply driven currency. Furthermore, given the strength of transactions demand in our model, we will be able to make some assessment of it performs as a medium of exchange.  
+Does Bitcoin exhibit traditional currency demand and supply mechanics? We will investigate this using a combination of descriptive statistics and plots. We will then build an econometric regression model to show the effect of transaction demand and supply of bitcoins on its price, providing evidence on whether Bitcoin is a demand driven or supply driven currency. Furthermore, given the strength of transactions demand in our model, we will be able to make some assessment of how it performs as a medium of exchange.
+
 We predict that Bitcoin will show greater supply dominant effects but the effect of demand or transactions to be small or negligible, i.e. Bitcoin is not a good medium of exchange.
 
 2. Are changes in Bitcoin's exchange price related to movements in other major currencies, and are the profile of returns similar?
+
 We predict that returns on Bitcoin will not be closely correlated to that of other currencies due to its young age, but, as a currency, it should exhibit a similar profile of returns.
 
 
@@ -227,7 +229,7 @@ Our dataset contains historical pricing information on bitcoin (along with trans
 \newpage
 
 ##1.5 Description of Variables
-Although our primary dataset has 24 variables, we focused on 5 from the original dataset and created a new 'returns' variable using the DPLYR Mutate() function. The following descriptions were taken from the Dataset's overview page on Kaggle (SRK,2017).  
+Although our primary dataset has 24 variables, we focused on 5 from the original dataset and created a new 'returns' variable using the DPLYR Mutate() function. The following descriptions were taken from the dataset's overview page on Kaggle (SRK,2017).  
 
 ```{r, echo=FALSE}
 
@@ -262,7 +264,7 @@ price_over_time
 ```
 
 ###Return of Bitcoin Price
-We then computed the return of bitcoin price over the investigated time period. The return is computed by dividing the difference between the market price of t-1 and t by the market price of t-1. 
+We then computed the return of bitcoin price over the investigated time period. The return is computed by dividing the difference between the market price of t-1 and t, by the market price of t-1. 
 
 ```{r , echo=F,warning=F}
 #return over time
@@ -341,7 +343,7 @@ mining_over_time
 
 ##2.2 Econometric Model
 
-We will now examine further examine Bitcoin's supply and demand mechanics using variables such as transactions, prices and coin supply in tandem. We will build an econometric model that will identify what mechanics drive Bitcoin's price, in other words is it supply or demand based driven. If it is more demand based driven via transactions and if the effect size is large then we can imply that it is versatile as a medium of exchange. The coefficients from our model will also indicate the magnitude and direction of effects.
+We will further examine Bitcoin's supply and demand mechanics using variables such as transactions, prices and bitcoin supply in tandem. We will build an econometric model that will identify what mechanics drive Bitcoin's price, in other words is it supply or demand based driven. If it is more demand based driven via transactions and if the effect size is large then we can then imply it is versatile as a medium of exchange. The coefficients from our model will also indicate the magnitude and direction of effects.
 
 We can build our econometric model as follows:
 
@@ -349,7 +351,7 @@ $$Exchange Price_t = a + b * (Bitcoin Supply)_t + c * (Transactions)_t + e_t$$
 
 (Where the above relationship represents the natural logarithms transformation of each variable. We performed a natural logarithm transformation on variables and plotted all the variables on log scale to make sure their relationship is linear.)
 
-Assuming our model holds for other effects, we ran a regression using data from 18/08/2010 to 16/09/2017, on a total of 815 observations.
+Assuming our model holds for other effects, we ran this regression using data from 18/08/2010 to 16/09/2017, on a total of 815 observations.
 
 \newpage
 
@@ -365,15 +367,15 @@ stargazer(reg_1, type = "text", title="Regression Results", digits = 2)
   
   
 
-From the summary of multiple linear regression model, the equation should be:
+From the summary of the multiple linear regression model, the output equation can be read as:
 
 $$log(Exchange Price_t) = 295.35 - 22.14 * log (Bitcoin Supply_t) + 4.15 * log (Transactions_t)$$
 
-When Bitcoin supply increases by 1% (ceteris paribus), the Exchange Price decreases by 22.14%. In contrast, when transactions increase by 1% (ceteris paribus), the Exchange Price increases by 4.15%. Both suppy and transactions are significant at the 5% level. 
+When Bitcoin supply increases by 1% (ceteris paribus), the exchange price decreases by 22.14%. In contrast, when transactions increase by 1% (ceteris paribus), the exchange price increases by 4.15%. Both supply and transactions are significant at the 1% level. 
 
-F Statistic equals to 756.29 on 812 degree of freedom, and both Bitcoin supply and transaction's significant value p < 0.01, so all the dependant variables have significant influence on Exchange Price. $R^2$ and adjusted $R^2$ equals to 0.65, which means 65% of the variability in the response is explained by our model. Residual Std. Error equals to 0.50 on 812 degree of freedom, so the typical difference between the observed Exchange Price and the Exchange Price predicted by the model is about 0.50.
+F Statistic equals to 756.29 on 812 degree of freedom, and both Bitcoin supply and transaction's significant value p < 0.01, so all the dependant variables have significant influence on Exchange Price. $R^2$ and adjusted $R^2$ equals to 0.65, which means 65% of the variability in the response is explained by our model. Residual Std. Error equals to 0.50 on 812 degree of freedom, so the typical difference between the observed exchange price and the exchange price predicted by the model is about 0.50.
 
-The below graph gives a more intuitive representation: the orange scatter point is the actual observed Exchange rate over time, and the red line is the model's prediction. 
+The below graph gives a more intuitive representation: the orange scatter point is the actual observed exchange rate over time, and the red line is the model's prediction. 
 
 ```{r}
 reg_1.res <- residuals(reg_1)
@@ -387,7 +389,7 @@ comparison_2 <- comparison %>% filter(bitcoin_variables.Date >= "2015-01-02")
 ggplot(comparison_2, aes(x = bitcoin_variables.Date,y = log_btc_market_price)) + geom_point(colour = "black", shape = 21, fill = "orange") + geom_point(aes(y = reg_1.predict), colour = "Red", shape = 22,size = -1) + labs(x = "Date", y = "log (Bitcoin's market price)") +theme_Publication()
 ```
 
-In summary, our econometrics model tells us that Bitcoin does exhibit normal currency like patterns, with price moving positively in accordance to transaction demand and negative to supply. However, the effect sizes tell us another story. The effect of supply with a beta estimate of -22.14 is vastly greater than the transactions demand effect of 4.15, and larger than what a normal currency would exhibit. Bitcoin does show supply side dominant effects. Given the smaller transaction demand coefficient, we can also semi-conclude here that Bitcoin is perhaps not so robust enough to be a medium of exchange.
+In summary, our econometrics model tells us that Bitcoin does exhibit normal currency like patterns, with price moving positively in accordance to transaction demand and negative to supply. However, the effect sizes tell us another story. The effect of supply with a beta estimate of -22.14 is vastly greater than the transactions demand effect of 4.15, and larger than what a normal currency would exhibit. Therefore Bitcoin does show supply dominant effects. Given the smaller transaction demand coefficient, we can also semi-conclude that Bitcoin is perhaps not so robust enough to be classed as a good medium of exchange.
 
 
 \newpage
@@ -398,7 +400,7 @@ In summary, our econometrics model tells us that Bitcoin does exhibit normal cur
 
 Furthering this investigation into whether Bitcoin should be considered a currency, comparisons between Bitcoin and other major currencies could be made to explore the similarities between them. Gold is also included in this comparison, acting as a benchmark representing a completely different asset class and a known financial 'safe-haven'. To normalise the differences in nominal exchange rates between different currencies, this section would use the returns of each currency when expressed in USD. 
 
-A preliminary analysis on the correlation between the returns of each currency would provide an idea of how close the Bitcoin price is related to prices of other currencies. If Bitcoin behaved like any other asset or currency, it should be expected that it would display positive correlations with them as their prices and exchange rates are all expressed in terms of USD, and at least US-centric events should affect the prices on all assets similarly.  
+A preliminary analysis on the correlation between the returns of each currency would provide an idea of how close Bitcoin price is related to prices of other currencies. If Bitcoin behaved like any other asset or currency, it should be expected that it would display positive correlations with them as their prices and exchange rates are all expressed in terms of USD, and at least US-centric events should affect the prices on all assets similarly.  
   
 
 
@@ -414,10 +416,10 @@ ggplot(data = melted_currency, aes(x=Var1, y=Var2, fill=value)) +
 ```
 
 
-The correlation heatmap indicates that the Bitcoin's returns are insignificantly and possibly negatively correlated with the returns on other assets. Even the Japanese Yen, known to be a safe-haven currency, and gold, demonstrate stronger relationships in price movements with other currencies than the Bitcoin do, suggesting the Bitcoin may stand as an asset class on its own. A one-sided statistical test on correlations between returns on each currency confirms that the Bitcoin's returns does not exhibit any positive correlation with the return on any other currency. This test uses the hypotheses:
+The correlation heatmap indicates that the Bitcoin's returns are insignificantly and possibly negatively correlated with the returns on other assets. Even the Japanese Yen, known to be a safe-haven currency, and gold, demonstrate stronger relationships in price movements with other currencies than Bitcoin do, suggesting the Bitcoin may stand as an asset class on its own. A one-sided statistical test on correlations between returns on each currency confirms that Bitcoin's returns does not exhibit any positive correlation with the return of any other currency. This test uses the hypotheses:
 
-H~0~: The correlation between the currency's returns and bitcoin returns is equal to 0.  
-H~1~: The correlation between the currency's returns and bitcoin returns is greater than 0.
+H~0~: The correlation between each individual currency's returns and bitcoin returns is equal to 0.  
+H~1~: The correlation between each individual currency's returns and bitcoin returns is greater than 0.
 
 The results of the tests are tabulated below.
 
@@ -467,8 +469,8 @@ While variance is a key component in the profile of an asset's returns, comparin
 
 In testing the mean of returns, it would be most appropriate to use t-tests on each currency with the following hypothesis:
 
-H~0~:  The currency's mean return is equal to the mean return of Bitcoin  
-H~1~: The currency's mean return is not equal to the mean return of Bitcoin
+H~0~: Each individual currency's mean return is equal to the mean return of Bitcoin  
+H~1~: Each individual currency's mean return is not equal to the mean return of Bitcoin
 
 A t-test was performed in order to test the null hypothesis if the means of returns of currencies are equal to the mean of returns of bitcoin.
 
@@ -492,8 +494,8 @@ The table above shows the p-values for the t-tests on each currency, all of whic
 
 A secondary t-test can be performed to check if the mean of returns of currencies, gold and bitcoin are equal to zero. This should be expected because exchange rates between currencies should not exhibit any long term expected returns and trends. The hypotheses on these tests would be:
 
-H~0~:  The currency's mean return is equal 0.  
-H~1~: The currency's mean return is not equal to 0.
+H~0~: Each individual currency's mean return is equal 0.  
+H~1~: Each individual currency's mean return is not equal to 0.
 
 
 ```{r}
@@ -512,7 +514,7 @@ kable(pvmean0, caption= "p-values from test of mean equal zero")
 
 As seen above, the p-values for established currencies and gold suggest that there is insufficient evidence to reject the null hypothesis, indicating that the mean return of each asset or currency is statistically insignificant. However, in Bitcoin's case, the null hypothesis can be rejected at the 1% level of significance, indicating that the mean of returns of bitcoin is not equal to zero. 
 
-The mean return of Bitcoin points toward it not acting like a currency, as it bears no similarities to the returns of established currencies of today, and has had a non-zero mean return over the last 5 years. However, the bitcoin can be argued to have yet to find its stable price amongst other currencies, as its economy is still growing rapidly, leading to a difference in mean returns. As such, a more robust property could be the distribution of returns. 
+The mean return of Bitcoin points toward it not acting like a currency, as it bears no similarities to the returns of established currencies of today, and has had a non-zero mean return over the last 5 years. However, it can be argued that Bitcoin is yet to find its stable price amongst other currencies, as its economy is still growing rapidly, leading to a difference in mean returns. As such, a more robust property could be the distribution of returns. 
 
 The plot below presents a density plot for the returns of Bitcoin, Euro, GBP, JPY and Gold. Immediately, similarities can be observed between density of returns for currencies whereas the returns of bitcoin are far more volatile and widely distributed.
 
@@ -552,17 +554,17 @@ ggplot(stdretdf2) + geom_density(aes(x=ret, colour = curr)) + xlim(-3, 3) +
   theme_Publication()
 ```
 
-The density plot of standardised returns presents a much clearer picture of the distribution of returns of Bitcoin compared to other currencies. It is evident that, while not exactly equal, the distributions of other currencies? returns are very similar to one another, and relatively close to that of gold. The distribution of returns of Bitcoin however is very different from all the other distributions, with a much higher peak. Furthermore, the modal return in each distribution appears to be marginally positive, while that of Bitcoin is marginally negative, indicating a possible difference in the sign of the skew. While further statistical tests outside the scope of this paper have to be performed to ascertain such claims, the plot above clearly shows a stark difference in the underlying distribution of returns between bitcoin and other currencies. As such, it can be said that the profile of Bitcoin returns are fundamentally different from that of currencies, and perhaps even more different from currencies than gold is. 
+The density plot of standardised returns presents a much clearer picture of the distribution of returns of Bitcoin compared to other currencies. It is evident that, while not exactly equal, the distributions of other currencies returns are very similar to one another, and relatively close to that of gold. The distribution of returns of Bitcoin however is very different from all the other distributions, with a much higher peak. Furthermore, the modal return in each distribution appears to be marginally positive, while that of Bitcoin is marginally negative, indicating a possible difference in the sign of the skew. While further statistical tests outside the scope of this study have to be performed to ascertain such claims, the plot above clearly shows a stark difference in the underlying distribution of returns between Bitcoin and other currencies. As such, it can be said that the profile of Bitcoin returns are fundamentally different from that of currencies, and perhaps even more different from currencies than gold is. 
 
 \newpage
 
 #4. Findings & Conclusions
 
-In this study two central research questions about Bitcoin were introduced - does Bitcoin exhibit traditional currency demand and supply mechanics, and are changes in Bitcoin's exchange price related to movements in other major currencies, and are the profile of returns similar. 
+In this study two central research questions about Bitcoin were introduced - does Bitcoin exhibit traditional currency demand and supply mechanics, and are changes in Bitcoin's exchange price related or similar to movements in other major currencies.
 
 Our analysis concludes that Bitcoin does exhibit currency-like demand and supply mechanics in line with our prediction in Section 1.3. Further we assumed that Bitcoin would show greater supply effects versus transaction demand on exchange price, our econometric model showing this to be so. However, given the effect sizes from our model, we settle on a view that Bitcoin's transaction demand effect is relatively weak, and without a strong desire for consumers to use it, Bitcoin cannot be called a true medium of exchange. 
 
-We further investigated Bitcoin's  properties and specifically compared them to movements in other major currencies. As expected, the correlation between the returns of bitcoin and that of other currencies, including gold, has been insignificant over the past few years, which could be attributed to the young age of the bitcoin market. However, contrary to the second hypothesis set out in Section 1.3, it was found that the profile of returns exhibited by Bitcoin (in terms of mean, variance and distribution) is fundamentally different from that of other currencies in all aspects. 
+We further investigated Bitcoin's properties and specifically compared them to movements in other major currencies. As expected, the correlation between the returns of bitcoin and that of other currencies, including gold, has been insignificant over the past few years, which could be attributed to the young age of the Bitcoin market. However, contrary to the second hypothesis set out in Section 1.3, it was found that the profile of returns exhibited by Bitcoin (in terms of mean, variance and distribution) is fundamentally different from that of other currencies in all aspects. 
 
 As a result of these findings and the theory we introduced in Section 1.2, we have shown Bitcoin does not conform to the usual Economic interpretation of a currency (medium of exchange, store of value and unit of account). Our further analyses point to Bitcoin being fundamentally different from traditional currency and instead displaying behaviour of a new type of asset class. Given the relative young age of Bitcoin, it is advised that further analysis should be completed later to see if the effects in this study still hold true. Further areas of statistical improvement such as time-series analysis is also recommended.
 
